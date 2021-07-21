@@ -1446,7 +1446,8 @@ namespace BerryBrew {
         }
 
         private void PathAddPerl(StrawberryPerl perl) {
-            string path = PathGet();
+            //string path = PathGet();
+            string path = PathGetUsr();
             List<string> newPath = perl.Paths;
             
             string[] entries = path.Split(new char [] {';'});
@@ -1472,17 +1473,20 @@ namespace BerryBrew {
         }
 
         private static string PathGetUsr() {
-            const string keyName = @"Environment\";
+            const string keyName = @"Environment";
             string path = (string)Registry.CurrentUser.OpenSubKey(keyName).GetValue(
-                "PATH",
+                "Path",
                 "",
                 RegistryValueOptions.DoNotExpandEnvironmentNames
             );
+
+
             return path;
         }
 
         private void PathRemoveBerrybrew() {
             string path = PathGet();
+            //string path = PathGetUsr();
             List<string> paths = path.Split(new char[] {';'}).ToList();
             List<string> updatedPaths = new List<string>();
 
@@ -1496,8 +1500,8 @@ namespace BerryBrew {
         }
 
         private void PathRemovePerl(bool process=true) {
-            string path = PathGet();
-
+            //string path = PathGet();
+            string path = PathGetUsr();
             if (path == null) {
                 return;
             }
@@ -1544,9 +1548,10 @@ namespace BerryBrew {
             }
 
             try {
-                const string keyName = @"SYSTEM\CurrentControlSet\Control\Session Manager\Environment";
-                using (RegistryKey pathKey = Registry.LocalMachine.OpenSubKey(keyName, true)){
-
+                //const string keyName = @"SYSTEM\CurrentControlSet\Control\Session Manager\Environment";
+                const string keyName = @"Environment";
+               // using (RegistryKey pathKey = Registry.LocalMachine.OpenSubKey(keyName, true)){
+                  using (RegistryKey pathKey = Registry.CurrentUser.OpenSubKey(keyName, true)){
                     pathKey.DeleteValue("Path");
 
                     pathKey.SetValue(

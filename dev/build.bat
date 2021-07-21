@@ -9,7 +9,7 @@ call perl -i.bak -ne "s/\"run_mode\"\s+:\s+\"prod\"/\"run_mode\"\t\t  : \"build\
 
 echo "compiling dll..."
 
-call mcs^
+call csc^
     -lib:bin^
     -t:library^
     -r:Newtonsoft.Json.dll,ICSharpCode.SharpZipLib.dll^
@@ -18,7 +18,7 @@ call mcs^
 
 echo "compiling binary..."
 
-call mcs^
+call csc^
     -lib:build^
     -r:bbapi.dll^
     -win32icon:inc/berrybrew.ico^
@@ -27,7 +27,7 @@ call mcs^
 
 echo "compiling UI..."
 
-call mcs^
+call csc^
     -lib:build^
     -r:bbapi.dll^
     -r:System.Drawing^
